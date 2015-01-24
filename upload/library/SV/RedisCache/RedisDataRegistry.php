@@ -132,7 +132,7 @@ class XenForo_Model_DataRegistry extends XenForo_Model
 		$cache = $this->_getCache(true);
 		$dbItemNames = $itemNames;
 		$data = array();
-        
+
         if ($cache)
         {
             $cacheBackend = $cache->getBackend();
@@ -146,21 +146,21 @@ class XenForo_Model_DataRegistry extends XenForo_Model
                 foreach ($itemNames AS $k => $itemName)
                 {
                     $credis->hGet($prefix . $this->_getCacheEntryName($itemName), Cm_Cache_Backend_Redis::FIELD_DATA);
-                }                
+                }
                 $mgetData = $credis->exec();
-                
+
                 //  ensure data is decoded if required
-                foreach ($mgetData AS &$cacheData)
+                foreach ($mgetData AS $k => &$cacheData)
                 {
                     if ($cacheData !== false)
                     {
-                        $data[$itemName] = $cacheBackend->DecodeData($cacheData);
+                        $data[$itemNames[$k]] = $cacheBackend->DecodeData($cacheData);
                         unset($dbItemNames[$k]);
                     }
-                }               
+                }
             }
             else
-            {            
+            {
                 foreach ($itemNames AS $k => $itemName)
                 {
                     $cacheData = $cache->load($this->_getCacheEntryName($itemName));
@@ -169,7 +169,7 @@ class XenForo_Model_DataRegistry extends XenForo_Model
                         $data[$itemName] = $cacheData;
                         unset($dbItemNames[$k]);
                     }
-                } 
+                }
             }
         }
 
