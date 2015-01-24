@@ -6,8 +6,12 @@ require('Redis/lib/Credis/Client.php');
 require('Redis/Cm/Cache/Backend/Redis.php');
 class Zend_Cache_Backend_Redis extends Cm_Cache_Backend_Redis
 {
-
-    function getCredis()
+    public function DecodeData($data)
+    {
+        return $this->_decodeData($data);
+    }
+        
+    public function getCredis()
     {
         return $this->_redis;
     }
