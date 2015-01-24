@@ -9,6 +9,6 @@ class Zend_Cache_Backend_Redis extends Cm_Cache_Backend_Redis
 
     function getCredis()
     {
-      return $this->$_redis;
+        return $this->_redis;
     }
 }
