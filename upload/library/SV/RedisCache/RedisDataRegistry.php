@@ -141,10 +141,14 @@ class XenForo_Model_DataRegistry extends XenForo_Model
                 $credis = $cacheBackend->getCredis();
                 $prefix = Cm_Cache_Backend_Redis::PREFIX_KEY . $cache->getOption('cache_id_prefix');
 
+                $redisKeyMap = array();
+                $i = 0;
                 // create a pipelined request
                 $credis->pipeline()->multi();
                 foreach ($itemNames AS $k => $itemName)
                 {
+                    $redisKeyMap[$i] = $k;
+                    $i++;
                     $credis->hGet($prefix . $this->_getCacheEntryName($itemName), Cm_Cache_Backend_Redis::FIELD_DATA);
                 }
                 $mgetData = $credis->exec();
@@ -154,8 +158,9 @@ class XenForo_Model_DataRegistry extends XenForo_Model
                 {
                     if ($cacheData !== false)
                     {
-                        $data[$itemNames[$k]] = $cacheBackend->DecodeData($cacheData);
-                        unset($dbItemNames[$k]);
+                        $key = $redisKeyMap[$k];
+                        $data[$itemNames[$key]] = $cacheBackend->DecodeData($cacheData);
+                        unset($dbItemNames[$key]);
                     }
                 }
             }
