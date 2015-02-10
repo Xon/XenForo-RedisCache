@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="sv_rediscache" title="Zend Cache - Redis" version_string="1.0.2" version_id="4" url="https://xenforo.com/community/resources/zend-redis-cache.3965/" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
+<addon addon_id="sv_rediscache" title="Zend Cache - Redis" version_string="1.0.3" version_id="5" url="https://xenforo.com/community/resources/zend-redis-cache.3965/" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
   <admin_templates/>
   <admin_template_modifications/>
   <code_events/>
-  <code_event_listeners/>
+  <code_event_listeners>
+    <listener event_id="load_class" execute_order="10" callback_class="SV_RedisCache_Listener" callback_method="load_class" active="1" hint="XenForo_CssOutput" description="XenForo_CssOutput"/>
+    <listener event_id="load_class" execute_order="10" callback_class="SV_RedisCache_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Style" description="XenForo_Model_Style"/>
+  </code_event_listeners>
   <cron/>
   <email_templates/>
   <email_template_modifications/>

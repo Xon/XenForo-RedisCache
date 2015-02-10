@@ -114,6 +114,60 @@ class XenForo_Model_DataRegistry extends XenForo_Model
 			WHERE data_key = ?
 		', $itemName);
 	}
+    
+    public function getCredis($cache)
+    {
+        $cacheBackend = $cache->getBackend();
+        if (method_exists($cacheBackend, 'getCredis'))
+        {
+            return $cacheBackend->getCredis();
+        }
+        return null;
+    }
+
+	public function deleteMulti($itemNamePattern)
+	{
+        $cache = $this->_getCache(true);
+        if (empty($cache))
+        {
+            throw new Exception("Not Supported");
+        }
+        $credis = $this->getCredis($cache);
+        if (empty($credis))
+        {
+            throw new Exception("Not Supported");
+        }      
+        $prefix = Cm_Cache_Backend_Redis::PREFIX_KEY . $cache->getOption('cache_id_prefix');
+        $pattern = $prefix . $itemNamePattern;
+        // indicate to the redis instance would like to process X items at a time.
+        $count = 1000;
+        // find indexes matching the pattern
+        $cursor = null;
+        $keys = array();
+        while(true)
+        {
+            $next_keys = $credis->scan($cursor, $pattern, $count);
+            // scan can return an empty array
+            if($next_keys)
+            {
+                $keys += $next_keys;
+            }
+            if (empty($cursor) || $next_keys === false)
+            {
+                break;
+            }
+        }
+        if ($keys)
+        {
+            // delete them, use pipelining
+            $credis->pipeline()->multi();
+            foreach($keys as $key)
+            {
+                $credis->del($key);
+            }
+            $credis->exec();
+        }
+    }
 
 	/**
 	 * Gets multiple entries from the registry at once.
@@ -135,10 +189,10 @@ class XenForo_Model_DataRegistry extends XenForo_Model
 
         if ($cache)
         {
-            $cacheBackend = $cache->getBackend();
-            if (method_exists($cacheBackend, 'getCredis'))
+            $credis = $this->getCredis($cache);
+            if ($credis !== null)
             {
-                $credis = $cacheBackend->getCredis();
+                $cacheBackend = $cache->getBackend();
                 $prefix = Cm_Cache_Backend_Redis::PREFIX_KEY . $cache->getOption('cache_id_prefix');
 
                 $redisKeyMap = array();
