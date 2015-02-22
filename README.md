@@ -7,6 +7,9 @@ To prevent double encoding of cached data, it is strongly recommended to have th
 ```
 $config['cache']['frontendOptions']['automatic_serialization'] = false;
 ```
+*Warning*
+You must manually flush the cache after changing this setting!
+
 
 For best performance use: [phpredis PECL extension](http://pecl.php.net/package/redis)
 
