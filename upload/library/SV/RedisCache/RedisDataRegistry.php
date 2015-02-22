@@ -192,6 +192,7 @@ class XenForo_Model_DataRegistry extends XenForo_Model
             $credis = $this->getCredis($cache);
             if ($credis !== null)
             {
+                $automatic_serialization = $cache->getOption('automatic_serialization');
                 $cacheBackend = $cache->getBackend();
                 $prefix = Cm_Cache_Backend_Redis::PREFIX_KEY . $cache->getOption('cache_id_prefix');
 
@@ -213,7 +214,12 @@ class XenForo_Model_DataRegistry extends XenForo_Model
                     if ($cacheData !== false)
                     {
                         $key = $redisKeyMap[$k];
-                        $data[$itemNames[$key]] = $cacheBackend->DecodeData($cacheData);
+                        $k2 = $itemNames[$key];
+                        $data[$k2] = $cacheBackend->DecodeData($cacheData);
+                        if (!empty($automatic_serialization))
+                        {
+                            $data[$k2] = unserialize($data[$k2]);
+                        }
                         unset($dbItemNames[$key]);
                     }
                 }
