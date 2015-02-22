@@ -62,59 +62,59 @@ class XenForo_Model_DataRegistry extends XenForo_Model
     }
 
 
-	/**
-	 * Gets the named item.
-	 *
-	 * @param string $itemName
-	 *
-	 * @return mixed|null Value of the entry or null if it couldn't be found
-	 */
-	public function get($itemName)
-	{
-		$cacheItem = $this->_getCacheEntryName($itemName);
+    /**
+     * Gets the named item.
+     *
+     * @param string $itemName
+     *
+     * @return mixed|null Value of the entry or null if it couldn't be found
+     */
+    public function get($itemName)
+    {
+        $cacheItem = $this->_getCacheEntryName($itemName);
 
-		$cache = $this->_getCache(true);
+        $cache = $this->_getCache(true);
 
-		$cacheData = ($cache ? $cache->load($cacheItem) : false);
+        $cacheData = ($cache ? $cache->load($cacheItem) : false);
 
-		if ($cacheData !== false)
-		{
-			return unserialize($cacheData);
-		}
+        if ($cacheData !== false)
+        {
+            return unserialize($cacheData);
+        }
 
-		$data = $this->_getFromDb($itemName);
+        $data = $this->_getFromDb($itemName);
 
-		if ($data !== false)
-		{
-			if ($cache)
-			{
-				$cache->save($data, $cacheItem, array(), 86400);
-			}
-			return unserialize($data);
-		}
-		else
-		{
-			return null;
-		}
-	}
+        if ($data !== false)
+        {
+            if ($cache)
+            {
+                $cache->save($data, $cacheItem, array(), 86400);
+            }
+            return unserialize($data);
+        }
+        else
+        {
+            return null;
+        }
+    }
 
-	/**
-	 * Internal function to get the value of an item directly out of the DB,
-	 * ignoring the cache settings.
-	 *
-	 * @param string $itemName
-	 *
-	 * @return string|false Serialized value or false if not found
-	 */
-	protected function _getFromDb($itemName)
-	{
-		return $this->_getDb()->fetchOne('
-			SELECT data_value
-			FROM xf_data_registry
-			WHERE data_key = ?
-		', $itemName);
-	}
-    
+    /**
+     * Internal function to get the value of an item directly out of the DB,
+     * ignoring the cache settings.
+     *
+     * @param string $itemName
+     *
+     * @return string|false Serialized value or false if not found
+     */
+    protected function _getFromDb($itemName)
+    {
+        return $this->_getDb()->fetchOne('
+            SELECT data_value
+            FROM xf_data_registry
+            WHERE data_key = ?
+        ', $itemName);
+    }
+
     public function getCredis($cache)
     {
         $cacheBackend = $cache->getBackend();
@@ -125,8 +125,8 @@ class XenForo_Model_DataRegistry extends XenForo_Model
         return null;
     }
 
-	public function deleteMulti($itemNamePattern)
-	{
+    public function deleteMulti($itemNamePattern)
+    {
         $cache = $this->_getCache(true);
         if (empty($cache))
         {
@@ -136,7 +136,7 @@ class XenForo_Model_DataRegistry extends XenForo_Model
         if (empty($credis))
         {
             throw new Exception("Not Supported");
-        }      
+        }
         $prefix = Cm_Cache_Backend_Redis::PREFIX_KEY . $cache->getOption('cache_id_prefix');
         $pattern = $prefix . $itemNamePattern;
         // indicate to the redis instance would like to process X items at a time.
@@ -169,23 +169,23 @@ class XenForo_Model_DataRegistry extends XenForo_Model
         }
     }
 
-	/**
-	 * Gets multiple entries from the registry at once.
-	 *
-	 * @param array $itemNames List of item names
-	 *
-	 * @return array Format: [item name] => value, or null if it couldn't be found
-	 */
-	public function getMulti(array $itemNames)
-	{
-		if (!$itemNames)
-		{
-			return array();
-		}
+    /**
+     * Gets multiple entries from the registry at once.
+     *
+     * @param array $itemNames List of item names
+     *
+     * @return array Format: [item name] => value, or null if it couldn't be found
+     */
+    public function getMulti(array $itemNames)
+    {
+        if (!$itemNames)
+        {
+            return array();
+        }
 
-		$cache = $this->_getCache(true);
-		$dbItemNames = $itemNames;
-		$data = array();
+        $cache = $this->_getCache(true);
+        $dbItemNames = $itemNames;
+        $data = array();
 
         if ($cache)
         {
@@ -232,111 +232,111 @@ class XenForo_Model_DataRegistry extends XenForo_Model
             }
         }
 
-		if ($dbItemNames)
-		{
-			$dbData = $this->_getMultiFromDb($dbItemNames);
-			$data += $dbData;
+        if ($dbItemNames)
+        {
+            $dbData = $this->_getMultiFromDb($dbItemNames);
+            $data += $dbData;
 
-			if ($cache)
-			{
-				foreach ($dbData AS $itemName => $dataValue)
-				{
-					$cache->save($dataValue, $this->_getCacheEntryName($itemName));
-				}
-			}
-		}
+            if ($cache)
+            {
+                foreach ($dbData AS $itemName => $dataValue)
+                {
+                    $cache->save($dataValue, $this->_getCacheEntryName($itemName));
+                }
+            }
+        }
 
-		foreach ($itemNames AS $itemName)
-		{
-			if (!isset($data[$itemName]))
-			{
-				$data[$itemName] = null;
-			}
-			else
-			{
-				$data[$itemName] = unserialize($data[$itemName]);
-			}
-		}
+        foreach ($itemNames AS $itemName)
+        {
+            if (!isset($data[$itemName]))
+            {
+                $data[$itemName] = null;
+            }
+            else
+            {
+                $data[$itemName] = unserialize($data[$itemName]);
+            }
+        }
 
-		return $data;
-	}
+        return $data;
+    }
 
-	/**
-	 * Internal function to load multiple data registry values from the DB.
-	 *
-	 * @param array $itemNames
-	 *
-	 * @return array Format: [key] => value
-	 */
-	protected function _getMultiFromDb(array $itemNames)
-	{
-		if (!$itemNames)
-		{
-			return array();
-		}
+    /**
+     * Internal function to load multiple data registry values from the DB.
+     *
+     * @param array $itemNames
+     *
+     * @return array Format: [key] => value
+     */
+    protected function _getMultiFromDb(array $itemNames)
+    {
+        if (!$itemNames)
+        {
+            return array();
+        }
 
-		$db = $this->_getDb();
+        $db = $this->_getDb();
 
-		return $db->fetchPairs('
-			SELECT data_key, data_value
-			FROM xf_data_registry
-			WHERE data_key IN (' . $db->quote($itemNames) . ')
-		');
-	}
+        return $db->fetchPairs('
+            SELECT data_key, data_value
+            FROM xf_data_registry
+            WHERE data_key IN (' . $db->quote($itemNames) . ')
+        ');
+    }
 
-	/**
-	 * Sets a data registry value into the DB and updates the cache object.
-	 *
-	 * @param string $itemName
-	 * @param mixed $value
-	 */
-	public function set($itemName, $value)
-	{
-		$serialized = serialize($value);
+    /**
+     * Sets a data registry value into the DB and updates the cache object.
+     *
+     * @param string $itemName
+     * @param mixed $value
+     */
+    public function set($itemName, $value)
+    {
+        $serialized = serialize($value);
 
-		$this->_getDb()->query('
-			INSERT INTO xf_data_registry
-				(data_key, data_value)
-			VALUES
-				(?, ?)
-			ON DUPLICATE KEY UPDATE
-				data_value = VALUES(data_value)
-		', array($itemName, $serialized));
+        $this->_getDb()->query('
+            INSERT INTO xf_data_registry
+                (data_key, data_value)
+            VALUES
+                (?, ?)
+            ON DUPLICATE KEY UPDATE
+                data_value = VALUES(data_value)
+        ', array($itemName, $serialized));
 
-		$cache = $this->_getCache(true);
-		if ($cache)
-		{
-			$cache->save($serialized, $this->_getCacheEntryName($itemName));
-		}
-	}
+        $cache = $this->_getCache(true);
+        if ($cache)
+        {
+            $cache->save($serialized, $this->_getCacheEntryName($itemName));
+        }
+    }
 
-	/**
-	 * Deletes a data registry value from the DB and cache.
-	 *
-	 * @param string $itemName
-	 */
-	public function delete($itemName)
-	{
-		$db = $this->_getDb();
-		$db->delete('xf_data_registry', 'data_key = ' . $db->quote($itemName));
+    /**
+     * Deletes a data registry value from the DB and cache.
+     *
+     * @param string $itemName
+     */
+    public function delete($itemName)
+    {
+        $db = $this->_getDb();
+        $db->delete('xf_data_registry', 'data_key = ' . $db->quote($itemName));
 
-		$cache = $this->_getCache(true);
-		if ($cache)
-		{
-			$cache->remove($this->_getCacheEntryName($itemName));
-		}
-	}
+        $cache = $this->_getCache(true);
+        if ($cache)
+        {
+            $cache->remove($this->_getCacheEntryName($itemName));
+        }
+    }
 
-	/**
-	 * Gets the name that will be used in the cache for a given data
-	 * registry item.
-	 *
-	 * @param string $itemName Registry item name
-	 *
-	 * @return string Cache item name
-	 */
-	protected function _getCacheEntryName($itemName)
-	{
-		return 'data_' . $itemName;
-	}
+    /**
+     * Gets the name that will be used in the cache for a given data
+     * registry item.
+     *
+     * @param string $itemName Registry item name
+     *
+     * @return string Cache item name
+     */
+    protected function _getCacheEntryName($itemName)
+    {
+        return 'data_' . $itemName;
+    }
 }

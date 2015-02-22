@@ -17,7 +17,7 @@ class SV_RedisCache_XenForo_Model_Style extends XFCP_SV_RedisCache_XenForo_Model
             $cachePattern .= $style_id . "_";
         }
         $cachePattern .= "*";
-        
+
         $registry = $this->getModelFromCache('XenForo_Model_DataRegistry');
         if (method_exists($registry, 'deleteMulti'))
         {

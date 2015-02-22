@@ -4,7 +4,7 @@ class SV_RedisCache_XenForo_CssOutput extends XFCP_SV_RedisCache_XenForo_CssOutp
 {
     public function getCacheId()
     {
-        return 'xfCssCache' . 
+        return 'xfCssCache' .
             '_style_' . $this->_styleId .
             '_d_' . $this->_inputModifiedDate .
             '_dir_' . $this->_textDirection .
