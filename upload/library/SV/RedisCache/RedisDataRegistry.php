@@ -125,17 +125,29 @@ class XenForo_Model_DataRegistry extends XenForo_Model
         return null;
     }
 
+    static $loggedMissingRedis = false;
+
     public function deleteMulti($itemNamePattern)
     {
         $cache = $this->_getCache(true);
         if (empty($cache))
         {
-            throw new Exception("Not Supported");
+            if (empty(self::$loggedMissingRedis))
+            {
+                self::$loggedMissingRedis = true;
+                XenForo_Error::logException(new Exception("No Cache setup"));
+            }
+            return;
         }
         $credis = $this->getCredis($cache);
         if (empty($credis))
         {
-            throw new Exception("Not Supported");
+            if (empty(self::$loggedMissingRedis))
+            {
+                self::$loggedMissingRedis = true;
+                XenForo_Error::logException(new Exception("Redis Cache is not setup"));
+            }
+            return;
         }
         $prefix = Cm_Cache_Backend_Redis::PREFIX_KEY . $cache->getOption('cache_id_prefix');
         $pattern = $prefix . $itemNamePattern;
