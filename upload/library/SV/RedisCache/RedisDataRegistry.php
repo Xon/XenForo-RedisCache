@@ -12,56 +12,6 @@
  */
 class XenForo_Model_DataRegistry extends XenForo_Model
 {
-    protected static $supported_serializers = array('php','json','igbinary');
-
-    protected static $serializer = 'php';
-
-    public static function serialize($data)
-    {
-        switch(self::$serializer)
-        {
-            case 'php':
-                return serialize($data);
-            case 'json':
-                return json_encode($data).'';
-            case 'igbinary':
-                return igbinary_serialize($data);
-            default:
-                throw new Exception('No serializer selected');
-        }
-    }
-
-    public static function unserialize($data)
-    {
-        switch(self::$serializer)
-        {
-            case 'php':
-                return unserialize($data);
-            case 'json':
-                return json_decode($data);
-            case 'igbinary':
-                return igbinary_unserialize($data);
-            default:
-                throw new Exception('No serializer selected');
-        }
-    }
-
-
-    protected static function SetSerialize($serializer)
-    {
-        switch($serializer)
-        {
-            case 'php':
-            case 'json':
-            case 'igbinary':
-                self::$serializer = $serializer;
-                break;
-            default:
-                throw new Exception('Unknown serializer selected');
-        }
-    }
-
-
     /**
      * Gets the named item.
      *
@@ -117,6 +67,10 @@ class XenForo_Model_DataRegistry extends XenForo_Model
 
     public function getCredis($cache)
     {
+        if (empty($cache))
+        {
+            return null;
+        }
         $cacheBackend = $cache->getBackend();
         if (method_exists($cacheBackend, 'getCredis'))
         {
