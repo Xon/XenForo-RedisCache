@@ -3,6 +3,9 @@ XenForo + Redis + Glue code
 
 This "addon" is the required gluecode to use [Cm_Cache_Backend_Redis](https://github.com/colinmollenhour/Cm_Cache_Backend_Redis) to provide a Zend Cache target for [Redis](http://redis.io/).
 
+Additionally, this addon implement caching of thread counts in a forum.
+
+
 To prevent double encoding of cached data, it is strongly recommended to have the following configuration in XenForo's config.php:
 ```
 $config['cache']['frontendOptions']['automatic_serialization'] = false;
