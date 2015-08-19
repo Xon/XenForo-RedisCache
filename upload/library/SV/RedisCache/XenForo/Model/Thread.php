@@ -29,22 +29,40 @@ class SV_RedisCache_XenForo_Model_Thread extends XFCP_SV_RedisCache_XenForo_Mode
             }
             $key = $cachePrefix . 'forum_' . $forumId . '_threadcount_' . md5(serialize($conditionsSimplified));
 
-            $cacheData = $cache->load($key);
-            if ($cacheData !== false)
+            if (method_exists($registry, 'getCredis'))
             {
-                return unserialize($cacheData);
-            }
+                $cache = $this->_getCache(true);
+                $credis = $registry->getCredis($cache);
 
-            $data = parent::countThreadsInForum($forumId, $conditionsSimplified);
+                $cacheData = $credis->get($key);
+                if ($cacheData !== false)
+                {
+                    return intval($cacheData);
+                }
 
-            if ($data !== false)
-            {
-                $cache->save(serialize($data), $key, array(), $data <= $options->sv_threadcount_short * $options->discussionsPerPage ? $options->sv_threadcountcache_short : $options->sv_threadcountcache_long);
+                $data = parent::countThreadsInForum($forumId, $conditionsSimplified);
+
+                $expiry = $data <= $options->sv_threadcount_short * $options->discussionsPerPage ? $options->sv_threadcountcache_short : $options->sv_threadcountcache_long;
+                $credis->set($key, $data, intcal($expiry));
             }
             else
             {
-                $cache->remove($key);
+                $cacheData = $cache->load($key);
+                if ($cacheData !== false)
+                {
+                    $data = @unserialize($cacheData);
+                    if ($data !== false)
+                    {
+                        return $data;
+                    }
+                }
+
+                $data = parent::countThreadsInForum($forumId, $conditionsSimplified);
+
+                $expiry = $data <= $options->sv_threadcount_short * $options->discussionsPerPage ? $options->sv_threadcountcache_short : $options->sv_threadcountcache_long;
+                $cache->save(serialize($data), $key, array(), $expiry);
             }
+
             return $data;
         }
 
