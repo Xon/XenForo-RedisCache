@@ -22,15 +22,17 @@ class SV_RedisCache_XenForo_Model_Thread extends XFCP_SV_RedisCache_XenForo_Mode
                 }
             }
 
-            static $cachePrefix = null;
-            if ($cachePrefix === null)
-            {
-                $cachePrefix = XenForo_Application::get('options')->cachePrefix;
-            }
-            $key = $cachePrefix . 'forum_' . $forumId . '_threadcount_' . md5(serialize($conditionsSimplified));
-
+            $key = 'forum_' . $forumId . '_threadcount_' . md5(serialize($conditionsSimplified));
+            $registry = $this->_getDataRegistryModel();
             if (method_exists($registry, 'getCredis'))
             {
+                static $cachePrefix = null;
+                if ($cachePrefix === null)
+                {
+                    $cachePrefix = $cache->getOption('cache_id_prefix');
+                }
+                $key = Cm_Cache_Backend_Redis::PREFIX_KEY . $cachePrefix . 'r_'. $key;
+
                 $cache = $this->_getCache(true);
                 $credis = $registry->getCredis($cache);
 
@@ -43,7 +45,7 @@ class SV_RedisCache_XenForo_Model_Thread extends XFCP_SV_RedisCache_XenForo_Mode
                 $data = parent::countThreadsInForum($forumId, $conditionsSimplified);
 
                 $expiry = $data <= $options->sv_threadcount_short * $options->discussionsPerPage ? $options->sv_threadcountcache_short : $options->sv_threadcountcache_long;
-                $credis->set($key, $data, intcal($expiry));
+                $credis->set($key, '' . $data,  intval($expiry));
             }
             else
             {
