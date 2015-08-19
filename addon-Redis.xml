@@ -28,6 +28,12 @@
       <sub_options></sub_options>
       <relation group_id="performance" display_order="10010"/>
     </option>
+    <option option_id="sv_threadcount_sv_threadcount_moderated" edit_format="onoff" data_type="boolean" can_backup="1">
+      <default_value>1</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="performance" display_order="10005"/>
+    </option>
     <option option_id="sv_threadcountcache_long" edit_format="spinbox" data_type="positive_integer" can_backup="1">
       <default_value>3600</default_value>
       <edit_format_params></edit_format_params>
@@ -55,6 +61,8 @@
     <phrase title="option_sv_threadcount_caching_explain" version_id="101000" version_string="1.1.0"><![CDATA[Caches per forum thread counts to reduce forum view page times.]]></phrase>
     <phrase title="option_sv_threadcount_short" version_id="101000" version_string="1.1.0"><![CDATA[Small forum threshold]]></phrase>
     <phrase title="option_sv_threadcount_short_explain" version_id="101000" version_string="1.1.0"><![CDATA[The number of pages for a forum to be consider a small forum.]]></phrase>
+    <phrase title="option_sv_threadcount_sv_threadcount_moderated" version_id="101010" version_string="1.1.1"><![CDATA[Count Moderated Threads]]></phrase>
+    <phrase title="option_sv_threadcount_sv_threadcount_moderated_explain" version_id="101010" version_string="1.1.1"><![CDATA[If the user can see all other threads, do not count moderated threads. Disabling this option will cause per-user caching of forum counts rather than being shared.]]></phrase>
   </phrases>
   <route_prefixes/>
   <style_properties/>

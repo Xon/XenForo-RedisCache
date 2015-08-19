@@ -10,9 +10,18 @@ class SV_RedisCache_XenForo_Model_Thread extends XFCP_SV_RedisCache_XenForo_Mode
             // simplify the conditions, this will strip-out attributes which do not change
             // the forum thread count
             $conditionsSimplified = $conditions;
-            unset($conditionsSimplified['readUserId']);
-            unset($conditionsSimplified['watchUserId']);
-            unset($conditionsSimplified['postCountUserId']);
+            if (!isset($conditionsSimplified['userId']))
+            {
+                unset($conditionsSimplified['readUserId']);
+                unset($conditionsSimplified['watchUserId']);
+                unset($conditionsSimplified['postCountUserId']);
+                if ($conditionsSimplified['moderated'] !== true && !$options->sv_threadcount_moderated)
+                {
+                    // do not count moderated threads
+                    $conditionsSimplified['moderated'] = -1;
+                }
+            }
+
             static $cachePrefix = null;
             if ($cachePrefix === null)
             {
