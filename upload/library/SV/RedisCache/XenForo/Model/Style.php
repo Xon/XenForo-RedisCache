@@ -13,7 +13,7 @@ class SV_RedisCache_XenForo_Model_Style extends XFCP_SV_RedisCache_XenForo_Model
     {
         $registry = $this->_getDataRegistryModel();
         $cache = $this->_getCache(true);
-        if (!method_exists($registry, 'getCredis') && $credis = $registry->getCredis($cache))
+        if (!method_exists($registry, 'getCredis') || !($credis = $registry->getCredis($cache)))
         {
             return;
         }
