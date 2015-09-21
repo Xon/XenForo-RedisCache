@@ -24,12 +24,12 @@ class SV_RedisCache_XenForo_Model_Style extends XFCP_SV_RedisCache_XenForo_Model
             $cachePrefix = $cache->getOption('cache_id_prefix');
         }
 
-        $cachePattern = Cm_Cache_Backend_Redis::PREFIX_KEY . $cachePrefix . "xfCssCache_style_";
+        $pattern = Cm_Cache_Backend_Redis::PREFIX_KEY . $cachePrefix . "xfCssCache_style_";
         if ($style_id)
         {
-            $cachePattern .= $style_id . "_";
+            $pattern .= $style_id . "_";
         }
-        $cachePattern .= "*";
+        $pattern .= "*";
         $expiry = 5*60;
         // indicate to the redis instance would like to process X items at a time.
         $count = 1000;
@@ -55,7 +55,10 @@ class SV_RedisCache_XenForo_Model_Style extends XFCP_SV_RedisCache_XenForo_Model
             $credis->pipeline()->multi();
             foreach($keys as $key)
             {
-                $credis->ttl($key, $expiry);
+                if ($key)
+                {
+                    $credis->ttl($key, $expiry);
+                }
             }
             $credis->exec();
         }
