@@ -57,7 +57,7 @@ class SV_RedisCache_XenForo_Model_Style extends XFCP_SV_RedisCache_XenForo_Model
             {
                 if ($key)
                 {
-                    $credis->ttl($key, $expiry);
+                    $credis->expire($key, $expiry);
                 }
             }
             $credis->exec();
