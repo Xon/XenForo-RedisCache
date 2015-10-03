@@ -1,16 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="sv_rediscache" title="Redis - Zend Cache" version_string="1.1.2a" version_id="101021" url="https://xenforo.com/community/resources/zend-redis-cache.3965/" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
+<addon addon_id="sv_rediscache" title="Redis - Zend Cache" version_string="1.1.3" version_id="101030" url="https://xenforo.com/community/resources/zend-redis-cache.3965/" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
-  <admin_templates/>
-  <admin_template_modifications/>
+  <admin_templates>
+    <template title="SV_Redis_info"><![CDATA[<div class="section" id="RedisInfo">
+	<div class="secondaryContent statsList">
+		<h3 class="textHeading">{xen:phrase redis_info}</h3>
+		<div class="pairsJustified">
+			<dl>
+				<span class="label"><dt>{xen:phrase redis_version}:</dt></span>
+				<dd>{$redis.redis_version}</dd>
+			</dl>
+			
+			<xen:if is="{$redis.loading}">
+			<dl>
+				<span class="label">{xen:phrase redis_loading}</span>
+			</dl>
+			<xen:else/>			
+			<dl>
+				<span class="label"><dt>{xen:phrase redis_input_kbps}:</dt></span>
+				<dd>{$redis.instantaneous_input_kbps}</dd>
+			</dl>
+			<dl>
+				<span class="label"><dt>{xen:phrase redis_output_kbps}:</dt></span>
+				<dd>{$redis.instantaneous_output_kbps}</dd>
+			</dl>
+			<dl>
+				<span class="label"><dt>{xen:phrase redis_ops}:</dt></span>
+				<dd>{$redis.instantaneous_ops_per_sec}</dd>
+			</dl>
+			<dl>
+				<span class="label"><dt>{xen:phrase redis_db0_keys}:</dt></span>
+				<dd>{$redis.db0.keys}</dd>
+			</dl>
+			<dl>
+				<span class="label"><dt>{xen:phrase redis_db0_avg_ttl}:</dt></span>
+				<dd>{$redis.db0.avg_ttl}</dd>
+			</dl>
+			</xen:if>
+		</div>
+	</div>
+</div>]]></template>
+  </admin_templates>
+  <admin_template_modifications>
+    <modification template="home" modification_key="SV_RedisCache_home1" description="Add RedisInfo" execution_order="9" enabled="1" action="str_replace">
+      <find><![CDATA[</div>
+		</div>
+		
+		<!-- slot: pre_add_ons -->]]></find>
+      <replace><![CDATA[$0
+<xen:include template="SV_Redis_info"/>]]></replace>
+    </modification>
+  </admin_template_modifications>
   <code_events/>
   <code_event_listeners>
     <listener event_id="load_class" execute_order="3965" callback_class="SV_RedisCache_Listener" callback_method="load_class" active="1" hint="XenForo_CssOutput" description="XenForo_CssOutput"/>
     <listener event_id="load_class" execute_order="3965" callback_class="SV_RedisCache_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Style" description="XenForo_Model_Style"/>
     <listener event_id="load_class" execute_order="3965" callback_class="SV_RedisCache_Listener" callback_method="load_class" active="1" hint="XenForo_Model_DataRegistry" description="XenForo_Model_DataRegistry"/>
     <listener event_id="load_class" execute_order="3965" callback_class="SV_RedisCache_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Thread" description="XenForo_Model_Thread"/>
+    <listener event_id="load_class" execute_order="3965" callback_class="SV_RedisCache_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerAdmin_Home" description="XenForo_ControllerAdmin_Home"/>
   </code_event_listeners>
   <cron/>
   <email_templates/>
@@ -63,6 +112,14 @@
     <phrase title="option_sv_threadcount_short_explain" version_id="101000" version_string="1.1.0"><![CDATA[The number of pages for a forum to be consider a small forum.]]></phrase>
     <phrase title="option_sv_threadcount_sv_threadcount_moderated" version_id="101010" version_string="1.1.1"><![CDATA[Count Moderated Threads]]></phrase>
     <phrase title="option_sv_threadcount_sv_threadcount_moderated_explain" version_id="101010" version_string="1.1.1"><![CDATA[If the user can see all other threads, do not count moderated threads. Disabling this option will cause per-user caching of forum counts rather than being shared.]]></phrase>
+    <phrase title="redis_db0_avg_ttl" version_id="101030" version_string="1.1.3"><![CDATA[Average TTL]]></phrase>
+    <phrase title="redis_db0_keys" version_id="101030" version_string="1.1.3"><![CDATA[Keys]]></phrase>
+    <phrase title="redis_info" version_id="101030" version_string="1.1.3"><![CDATA[Redis Information)]]></phrase>
+    <phrase title="redis_input_kbps" version_id="101030" version_string="1.1.3"><![CDATA[To Redis (kbps)]]></phrase>    
+    <phrase title="redis_loading" version_id="101030" version_string="1.1.3"><![CDATA[Redis is still loading.]]></phrase>
+    <phrase title="redis_ops" version_id="101030" version_string="1.1.3"><![CDATA[Operations per second]]></phrase>
+    <phrase title="redis_output_kbps" version_id="101030" version_string="1.1.3"><![CDATA[From Redis (kbps)]]></phrase>
+    <phrase title="redis_version" version_id="101030" version_string="1.1.3"><![CDATA[Version]]></phrase>
   </phrases>
   <route_prefixes/>
   <style_properties/>
