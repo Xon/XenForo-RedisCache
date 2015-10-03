@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="sv_rediscache" title="Redis - Zend Cache" version_string="1.1.3" version_id="101030" url="https://xenforo.com/community/resources/zend-redis-cache.3965/" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
+<addon addon_id="sv_rediscache" title="Redis - Zend Cache" version_string="1.1.3a" version_id="101031" url="https://xenforo.com/community/resources/zend-redis-cache.3965/" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -49,13 +49,11 @@
 </div>]]></template>
   </admin_templates>
   <admin_template_modifications>
-    <modification template="home" modification_key="SV_RedisCache_home1" description="Add RedisInfo" execution_order="9" enabled="1" action="str_replace">
-      <find><![CDATA[</div>
-		</div>
-		
-		<!-- slot: pre_add_ons -->]]></find>
-      <replace><![CDATA[$0
-<xen:include template="SV_Redis_info"/>]]></replace>
+    <modification template="home" modification_key="SV_RedisCache_home1" description="Add RedisInfo" execution_order="3965" enabled="1" action="preg_replace">
+      <find><![CDATA[#(<div class="sidebar">.*<!-- slot: pre_add_ons -->.*?)(\s*<xen:if is="{\$canManageAddOns}">)#si]]></find>
+      <replace><![CDATA[$1
+<xen:include template="SV_Redis_info"/>
+$2]]></replace>
     </modification>
   </admin_template_modifications>
   <code_events/>
@@ -120,7 +118,7 @@
     <phrase title="redis_db0_avg_ttl" version_id="101030" version_string="1.1.3"><![CDATA[Average TTL]]></phrase>
     <phrase title="redis_db0_keys" version_id="101030" version_string="1.1.3"><![CDATA[Keys]]></phrase>
     <phrase title="redis_disabled" version_id="101030" version_string="1.1.3"><![CDATA[Redis is disabled.]]></phrase>
-    <phrase title="redis_info" version_id="101030" version_string="1.1.3"><![CDATA[Redis Information)]]></phrase>
+    <phrase title="redis_info" version_id="101031" version_string="1.1.3a"><![CDATA[Redis Information]]></phrase>
     <phrase title="redis_input_kbps" version_id="101030" version_string="1.1.3"><![CDATA[To Redis (kbps)]]></phrase>
     <phrase title="redis_loading" version_id="101030" version_string="1.1.3"><![CDATA[Redis is still loading.]]></phrase>
     <phrase title="redis_ops" version_id="101030" version_string="1.1.3"><![CDATA[Operations per second]]></phrase>
