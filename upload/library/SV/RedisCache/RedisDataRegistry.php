@@ -126,7 +126,7 @@ class XenForo_Model_DataRegistry extends XenForo_Model
         if ($keys)
         {
             // delete them, use pipelining
-            $credis->pipeline()->multi();
+            $credis->pipeline();
             foreach($keys as $key)
             {
                 $credis->del($key);
@@ -165,7 +165,7 @@ class XenForo_Model_DataRegistry extends XenForo_Model
                 $redisKeyMap = array();
                 $i = 0;
                 // create a pipelined request
-                $credis->pipeline()->multi();
+                $credis->pipeline();
                 foreach ($itemNames AS $k => $itemName)
                 {
                     $redisKeyMap[$i] = $k;

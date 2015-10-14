@@ -52,7 +52,7 @@ class SV_RedisCache_XenForo_Model_Style extends XFCP_SV_RedisCache_XenForo_Model
         if ($keys)
         {
             // adjust TTL them, use pipe-lining
-            $credis->pipeline()->multi();
+            $credis->pipeline();
             foreach($keys as $key)
             {
                 if ($key)
