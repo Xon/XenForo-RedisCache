@@ -10,9 +10,14 @@ class Zend_Cache_Backend_Redis extends Cm_Cache_Backend_Redis
     {
         return $this->_decodeData($data);
     }
-        
+
     public function getCredis()
     {
         return $this->_redis;
+    }
+
+    public function useLua()
+    {
+        return $this->_useLua;
     }
 }
