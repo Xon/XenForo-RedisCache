@@ -15,4 +15,18 @@ class SV_RedisCache_XenForo_Model_DataRegistry extends XFCP_SV_RedisCache_XenFor
         }
         return null;
     }
+
+    public function useLua($cache)
+    {
+        if (empty($cache))
+        {
+            return null;
+        }
+        $cacheBackend = $cache->getBackend();
+        if (method_exists($cacheBackend, 'useLua'))
+        {
+            return $cacheBackend->useLua();
+        }
+        return null;
+    }
 }
