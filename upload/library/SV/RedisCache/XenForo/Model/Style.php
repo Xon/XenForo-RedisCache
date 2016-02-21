@@ -32,25 +32,19 @@ class SV_RedisCache_XenForo_Model_Style extends XFCP_SV_RedisCache_XenForo_Model
         $pattern .= "*";
         $expiry = 5*60;
         // indicate to the redis instance would like to process X items at a time.
-        $count = 1000;
+        $count = 10000;
+        // prevent looping forever
+        $loopGuard = 100;
         // find indexes matching the pattern
         $cursor = null;
-        $keys = array();
-        while(true)
+        do
         {
-            $next_keys = $credis->scan($cursor, $pattern, $count);
-            // scan can return an empty array
-            if($next_keys)
-            {
-                $keys += $next_keys;
-            }
-            if (empty($cursor) || $next_keys === false)
+            $keys = $credis->scan($cursor, $pattern, $count);
+            $loopGuard--;
+            if ($keys === false)
             {
                 break;
             }
-        }
-        if ($keys)
-        {
             // adjust TTL them, use pipe-lining
             $credis->pipeline();
             foreach($keys as $key)
@@ -62,5 +56,6 @@ class SV_RedisCache_XenForo_Model_Style extends XFCP_SV_RedisCache_XenForo_Model
             }
             $credis->exec();
         }
+        while($loopGuard > 0 && !empty($cursor));
     }
 }
