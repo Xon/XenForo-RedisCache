@@ -11,18 +11,37 @@ class SV_RedisCache_XenForo_ControllerAdmin_Home extends XFCP_SV_RedisCache_XenF
             $registry = $this->getModelFromCache('XenForo_Model_DataRegistry');
             if (method_exists($registry, 'getCredis') && $credis = $registry->getCredis($cache))
             {
-                $response->params['redis'] = $credis->info();
-                if ($response->params['redis'])
+                $data = $credis->info();
+                if (!empty($data))
                 {
-                    $list = explode(',', $response->params['redis']['db0']);
-                    $dbstats = array();
-                    foreach($list as $item)
+                    $config = XenForo_Application::getConfig()->toArray();
+                    $database = 0;
+                    if (!empty($config['cache']['backendOptions']['database']))
                     {
-                        $parts = explode('=', $item);
-                        $dbstats[$parts[0]] = $parts[1];
+                        $database = (int)$config['cache']['backendOptions']['database'];
                     }
-                    $response->params['redis']['db0'] = $dbstats;
+                    $db = array();
+                    foreach($data as $key => &$value)
+                    {
+                        if (preg_match('/^db(\d+)$/i',$key, $matches))
+                        {
+                            $index = $matches[1];
+                            unset($data[$key]);
+                            $list = explode(',', $value);
+                            $dbstats = array();
+                            foreach($list as $item)
+                            {
+                                $parts = explode('=', $item);
+                                $dbstats[$parts[0]] = $parts[1];
+                            }
+
+                            $db[$index] = $dbstats;
+                        }
+                    }
+                    $data['db'] = $db;
+                    $data['db_default'] = $database;
                 }
+                $response->params['redis'] = $data;
             }
         }
 
