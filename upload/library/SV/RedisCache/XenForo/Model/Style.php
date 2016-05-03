@@ -11,6 +11,12 @@ class SV_RedisCache_XenForo_Model_Style extends XFCP_SV_RedisCache_XenForo_Model
 
     public function styleCachePurge($style_id = null)
     {
+        $this->_clearCache("xfCssCache_style_", $style_id);
+        $this->_clearCache("xfSvgCache_style_", $style_id);
+    }
+
+    protected function _clearCache($pattern, $style_id = null)
+    {
         $registry = $this->_getDataRegistryModel();
         $cache = $this->_getCache(true);
         if (!method_exists($registry, 'getCredis') || !($credis = $registry->getCredis($cache)))
@@ -18,18 +24,12 @@ class SV_RedisCache_XenForo_Model_Style extends XFCP_SV_RedisCache_XenForo_Model
             return;
         }
 
-        $this->_clearCache($credis, "xfCssCache_style_");
-        $this->_clearCache($credis, "xfSvgCache_style_");
-    }
-
-    protected function _clearCache($credis, $cachekey)
-    {
         static $cachePrefix = null;
         if ($cachePrefix === null)
         {
             $cachePrefix = $cache->getOption('cache_id_prefix');
         }
-        $pattern = Cm_Cache_Backend_Redis::PREFIX_KEY . $cachePrefix . $cachekey;
+        $pattern = Cm_Cache_Backend_Redis::PREFIX_KEY . $cachePrefix . $pattern;
         if ($style_id)
         {
             $pattern .= $style_id . "_";
