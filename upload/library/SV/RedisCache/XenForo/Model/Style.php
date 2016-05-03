@@ -18,13 +18,18 @@ class SV_RedisCache_XenForo_Model_Style extends XFCP_SV_RedisCache_XenForo_Model
             return;
         }
 
+        $this->_clearCache($credis, "xfCssCache_style_");
+        $this->_clearCache($credis, "xfSvgCache_style_");
+    }
+
+    protected function _clearCache($credis, $cachekey)
+    {
         static $cachePrefix = null;
         if ($cachePrefix === null)
         {
             $cachePrefix = $cache->getOption('cache_id_prefix');
         }
-
-        $pattern = Cm_Cache_Backend_Redis::PREFIX_KEY . $cachePrefix . "xfCssCache_style_";
+        $pattern = Cm_Cache_Backend_Redis::PREFIX_KEY . $cachePrefix . $cachekey;
         if ($style_id)
         {
             $pattern .= $style_id . "_";
