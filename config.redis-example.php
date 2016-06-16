@@ -29,6 +29,6 @@ $config['cache']['backendOptions'] = array(
         'port' => 6379,
         );
 // install Redis-aware XF Caching replacement. Will break in XF 2.0
-require(XenForo_Application::getConfigDir().'/SV/RedisCache/Installer.php');        
+require(XenForo_Application::getInstance()->getConfigDir().'/SV/RedisCache/Installer.php');        
         
 // $redis = XenForo_Application::getCache()->getBackend()->getCredis();        
