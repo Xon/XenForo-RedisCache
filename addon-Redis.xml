@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="sv_rediscache" title="Redis - Zend Cache" version_string="1.1.13" version_id="1011300" url="https://xenforo.com/community/resources/zend-redis-cache.3965/" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
+<addon addon_id="sv_rediscache" title="Redis - Zend Cache" version_string="1.1.13a" version_id="1011301" url="https://xenforo.com/community/resources/zend-redis-cache.3965/" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -135,6 +135,7 @@ $2]]></replace>
     <phrase title="redis_lua" version_id="1011300" version_string="1.1.13"><![CDATA[Using Lua]]></phrase>
     <phrase title="redis_ops" version_id="101030" version_string="1.1.3"><![CDATA[Operations per second]]></phrase>
     <phrase title="redis_output_kbps" version_id="101030" version_string="1.1.3"><![CDATA[From Redis (kbps)]]></phrase>
+    <phrase title="redis_phpredis" version_id="1011300" version_string="1.1.13"><![CDATA[phpredis version]]></phrase>
     <phrase title="redis_version" version_id="101030" version_string="1.1.3"><![CDATA[Version]]></phrase>
   </phrases>
   <route_prefixes/>
