@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="sv_rediscache" title="Redis - Zend Cache" version_string="1.1.12" version_id="1011200" url="https://xenforo.com/community/resources/zend-redis-cache.3965/" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
+<addon addon_id="sv_rediscache" title="Redis - Zend Cache" version_string="1.1.13" version_id="1011300" url="https://xenforo.com/community/resources/zend-redis-cache.3965/" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -16,6 +16,14 @@
             <dl>
                 <span class="label"><dt>{xen:phrase redis_version}:</dt></span>
                 <dd>{$redis.redis_version}</dd>
+            </dl>
+            <dl>
+                <span class="label"><dt>{xen:phrase redis_phpredis}:</dt></span>
+                <dd>{xen:if $redis.phpredis, {$redis.phpredis}, {xen:phrase n_a}}</dd>
+            </dl>
+            <dl>
+                <span class="label"><dt>{xen:phrase redis_lua}:</dt></span>
+                <dd>{xen:if $redis.lua, {xen:phrase yes}, {xen:phrase no}}</dd>
             </dl>
             <xen:if is="{$redis.loading}">
             <dl>
@@ -124,6 +132,7 @@ $2]]></replace>
     <phrase title="redis_info" version_id="101031" version_string="1.1.3a"><![CDATA[Redis Information]]></phrase>
     <phrase title="redis_input_kbps" version_id="101030" version_string="1.1.3"><![CDATA[To Redis (kbps)]]></phrase>
     <phrase title="redis_loading" version_id="101030" version_string="1.1.3"><![CDATA[Redis is still loading.]]></phrase>
+    <phrase title="redis_lua" version_id="1011300" version_string="1.1.13"><![CDATA[Using Lua]]></phrase>
     <phrase title="redis_ops" version_id="101030" version_string="1.1.3"><![CDATA[Operations per second]]></phrase>
     <phrase title="redis_output_kbps" version_id="101030" version_string="1.1.3"><![CDATA[From Redis (kbps)]]></phrase>
     <phrase title="redis_version" version_id="101030" version_string="1.1.3"><![CDATA[Version]]></phrase>

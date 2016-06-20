@@ -41,6 +41,8 @@ class SV_RedisCache_XenForo_ControllerAdmin_Home extends XFCP_SV_RedisCache_XenF
                     $data['db'] = $db;
                     $data['db_default'] = $database;
                 }
+                $data['lua'] = method_exists($registry, 'useLua') && $registry->useLua($cache);
+                $data['phpredis'] = phpversion('redis');
                 $response->params['redis'] = $data;
             }
         }
