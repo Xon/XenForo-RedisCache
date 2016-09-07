@@ -6,6 +6,16 @@ require('Redis/lib/Credis/Client.php');
 require('Redis/Cm/Cache/Backend/Redis.php');
 class Zend_Cache_Backend_Redis extends Cm_Cache_Backend_Redis
 {
+    public function getCompressThreshold()
+    {
+        return $this->_compressThreshold;
+    }
+
+    public function setCompressThreshold($value)
+    {
+        $this->_compressThreshold = $value;
+    }
+
     public function DecodeData($data)
     {
         return $this->_decodeData($data);
