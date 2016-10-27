@@ -23,6 +23,8 @@ $config['cache']['backendOptions'] = array(
         'sunion_chunk_size' => 500,
         'lua_max_c_stack' => 5000,
         );
+// minimal case for sentinel support (aka HA)
+$config['cache']['backendOptions']['sentinel_master_set'] = 'mymaster';
 // minimal case
 $config['cache']['backendOptions'] = array(
         'server' => '127.0.0.1',

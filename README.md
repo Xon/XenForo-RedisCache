@@ -25,6 +25,11 @@ $config['cache']['backendOptions'] = array(
         );
 ```
 
+Redis Sentinel support for high-availability. See http://redis.io/topics/sentinel for more information.
+Enable with:
+$config['cache']['backendOptions']['sentinel_master_set'] = 'mymaster';
+'server' now points to a comma delimited list of sentinal servers to find the master
+
 Licensing:
 
 New BSD License:
