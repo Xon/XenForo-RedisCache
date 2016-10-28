@@ -28,7 +28,8 @@ $config['cache']['backendOptions'] = array(
 Redis Sentinel support for high-availability. See http://redis.io/topics/sentinel for more information.
 Enable with:
 $config['cache']['backendOptions']['sentinel_master_set'] = 'mymaster';
-'server' now points to a comma delimited list of sentinal servers to find the master
+$config['cache']['backendOptions']['server'] = '127.0.0.1:26379';
+'server' now points to a comma delimited list of sentinal servers to find the master. Note; the port must be explicitly listed
 
 Licensing:
 

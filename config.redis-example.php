@@ -25,6 +25,7 @@ $config['cache']['backendOptions'] = array(
         );
 // minimal case for sentinel support (aka HA)
 $config['cache']['backendOptions']['sentinel_master_set'] = 'mymaster';
+$config['cache']['backendOptions']['server'] = '127.0.0.1:26379';
 // minimal case
 $config['cache']['backendOptions'] = array(
         'server' => '127.0.0.1',
