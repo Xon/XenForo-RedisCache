@@ -106,7 +106,7 @@ class XenForo_Model_DataRegistry extends XenForo_Model
         $prefix = Cm_Cache_Backend_Redis::PREFIX_KEY . $cache->getOption('cache_id_prefix');
         $pattern = $prefix . $itemNamePattern;
         // indicate to the redis instance would like to process X items at a time.
-        $count = 1000;
+        $count = 100;
         // find indexes matching the pattern
         $cursor = null;
         $keys = array();

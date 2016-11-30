@@ -37,9 +37,9 @@ class SV_RedisCache_XenForo_Model_Style extends XFCP_SV_RedisCache_XenForo_Model
         $pattern .= "*";
         $expiry = 5*60;
         // indicate to the redis instance would like to process X items at a time.
-        $count = 10000;
+        $count = 100;
         // prevent looping forever
-        $loopGuard = 100;
+        $loopGuard = 10000;
         // find indexes matching the pattern
         $cursor = null;
         do
