@@ -22,7 +22,12 @@ class SV_RedisCache_XenForo_Model_Thread extends XFCP_SV_RedisCache_XenForo_Mode
                 }
             }
 
-            $key = 'forum_' . $forumId . '_threadcount_' . md5(serialize($conditionsSimplified));
+            $forumIdKey = $forumId;
+            if (is_array($forumIdKey))
+            {
+                $forumIdKey = implode('_', $forumId);
+            }
+            $key = 'forum_' . $forumIdKey . '_threadcount_' . md5(serialize($conditionsSimplified));
             $registry = $this->_getDataRegistryModel();
             $cache = $this->_getCache(true);
             if (method_exists($registry, 'getCredis') && $credis = $registry->getCredis($cache))
