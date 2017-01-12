@@ -155,7 +155,8 @@ class XenForo_Model_DataRegistry extends XenForo_Model
 
         if ($cache)
         {
-            $credis = $this->getCredis($cache, true);
+            $allowSlaveLoad = class_exists('XenForo_Dependencies_Public', false);
+            $credis = $this->getCredis($cache, $allowSlaveLoad);
             if ($credis !== null)
             {
                 $automatic_serialization = $cache->getOption('automatic_serialization');
