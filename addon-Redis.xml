@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="sv_rediscache" title="Redis - Zend Cache" version_string="1.2.2" version_id="1020200" url="https://xenforo.com/community/resources/zend-redis-cache.3965/" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
+<addon addon_id="sv_rediscache" title="Redis - Zend Cache" version_string="1.2.3" version_id="1020300" url="https://xenforo.com/community/resources/zend-redis-cache.3965/" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -30,26 +30,28 @@
                 <span class="label">{xen:phrase redis_loading}</span>
             </dl>
             <xen:else/>
+            <xen:if is="{$redis.HasIOStats}">
             <dl>
                 <span class="label"><dt>{xen:phrase redis_input_kbps}:</dt></span>
-                <dd>{$redis.instantaneous_input_kbps}</dd>
+                <dd>{xen:number {$redis.instantaneous_input_kbps}}</dd>
             </dl>
             <dl>
                 <span class="label"><dt>{xen:phrase redis_output_kbps}:</dt></span>
-                <dd>{$redis.instantaneous_output_kbps}</dd>
+                <dd>{xen:number {$redis.instantaneous_output_kbps}}</dd>
             </dl>
+            </xen:if>
             <dl>
                 <span class="label"><dt>{xen:phrase redis_ops}:</dt></span>
-                <dd>{$redis.instantaneous_ops_per_sec}</dd>
+                <dd>{xen:number {$redis.instantaneous_ops_per_sec}}</dd>
             </dl>
             <xen:if is="{$redis.db.{$redis.db_default}}">
             <dl>
                 <span class="label"><dt>{xen:phrase redis_db_x_keys, 'database={$redis.db_default}'}:</dt></span>
-                <dd>{$redis.db.{$redis.db_default}.keys}</dd>
+                <dd>{xen:number {$redis.db.{$redis.db_default}.keys}}</dd>
             </dl>
             <dl>
                 <span class="label"><dt>{xen:phrase redis_db_x_avg_ttl, 'database={$redis.db_default}'}:</dt></span>
-                <dd>{$redis.db.{$redis.db_default}.avg_ttl}</dd>
+                <dd>{xen:number {$redis.db.{$redis.db_default}.avg_ttl}}</dd>
             </dl>
             </xen:if>
             </xen:if>

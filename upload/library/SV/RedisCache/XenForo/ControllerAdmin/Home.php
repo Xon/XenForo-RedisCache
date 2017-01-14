@@ -43,6 +43,7 @@ class SV_RedisCache_XenForo_ControllerAdmin_Home extends XFCP_SV_RedisCache_XenF
                 }
                 $data['lua'] = method_exists($registry, 'useLua') && $registry->useLua($cache);
                 $data['phpredis'] = phpversion('redis');
+                $data['HasIOStats'] = isset($data['instantaneous_input_kbps']) && isset($data['instantaneous_output_kbps']);
                 $response->params['redis'] = $data;
             }
         }
