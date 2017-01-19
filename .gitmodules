@@ -1,4 +1,4 @@
 [submodule "upload/library/Redis"]
 	path = upload/library/Redis
-	url = git@github.com:Xon/Cm_Cache_Backend_Redis.git
+	url = https://github.com/Xon/Cm_Cache_Backend_Redis.git
 	branch = Fork
