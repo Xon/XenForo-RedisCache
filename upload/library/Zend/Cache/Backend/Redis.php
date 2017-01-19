@@ -21,7 +21,7 @@ class Zend_Cache_Backend_Redis extends Cm_Cache_Backend_Redis
         $output = shell_exec("hostname --all-ip-addresses");
         if ($output)
         {
-            $ips = explode(' ', $output);
+            $ips = array_filter(array_map('trim', (explode(' ', $output))));
             /* @var $slave Credis_Client */
             foreach($slaves as $slave)
             {
@@ -29,7 +29,7 @@ class Zend_Cache_Backend_Redis extends Cm_Cache_Backend_Redis
                 $host = $slave->getHost();
                 if (in_array($host, $ips))
                 {
-                    return $host;
+                    return $slave;
                 }
             }
         }
