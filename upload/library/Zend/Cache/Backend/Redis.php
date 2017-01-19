@@ -21,8 +21,12 @@ class Zend_Cache_Backend_Redis extends Cm_Cache_Backend_Redis
         return $this->_decodeData($data);
     }
 
-    public function getCredis()
+    public function getCredis($allowSlave = false)
     {
+        if ($allowSlave && $this->_slave)
+        {
+            return $this->_slave;
+        }
         return $this->_redis;
     }
 

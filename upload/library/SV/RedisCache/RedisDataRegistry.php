@@ -65,7 +65,7 @@ class XenForo_Model_DataRegistry extends XenForo_Model
         ', $itemName);
     }
 
-    public function getCredis($cache)
+    public function getCredis($cache, $allowSlave = false)
     {
         if (empty($cache))
         {
@@ -74,7 +74,7 @@ class XenForo_Model_DataRegistry extends XenForo_Model
         $cacheBackend = $cache->getBackend();
         if (method_exists($cacheBackend, 'getCredis'))
         {
-            return $cacheBackend->getCredis();
+            return $cacheBackend->getCredis($allowSlave);
         }
         return null;
     }
@@ -155,7 +155,7 @@ class XenForo_Model_DataRegistry extends XenForo_Model
 
         if ($cache)
         {
-            $credis = $this->getCredis($cache);
+            $credis = $this->getCredis($cache, true);
             if ($credis !== null)
             {
                 $automatic_serialization = $cache->getOption('automatic_serialization');

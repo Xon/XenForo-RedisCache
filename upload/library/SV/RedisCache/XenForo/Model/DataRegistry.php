@@ -2,7 +2,7 @@
 
 class SV_RedisCache_XenForo_Model_DataRegistry extends XFCP_SV_RedisCache_XenForo_Model_DataRegistry
 {
-    public function getCredis($cache)
+    public function getCredis($cache, $allowSlave = false)
     {
         if (empty($cache))
         {
@@ -11,7 +11,7 @@ class SV_RedisCache_XenForo_Model_DataRegistry extends XFCP_SV_RedisCache_XenFor
         $cacheBackend = $cache->getBackend();
         if (method_exists($cacheBackend, 'getCredis'))
         {
-            return $cacheBackend->getCredis();
+            return $cacheBackend->getCredis($allowSlave);
         }
         return null;
     }
