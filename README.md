@@ -57,5 +57,5 @@ New BSD License:
 - Cm_Cache_Backend_Redis
 - Credis
 
-Unlicense:
+MIT Licensed:
 - XenForo Addon code
