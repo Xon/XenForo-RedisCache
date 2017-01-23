@@ -43,6 +43,11 @@ class SV_RedisCache_XenForo_CssOutput extends XFCP_SV_RedisCache_XenForo_CssOutp
               if ($cacheBackend->getSlaveCredis() !== null)
               {
                   $cacheBackend->setSlaveCredis(null);
+                  // try loading from the master before regenerating
+                  if ($cacheCss = $cacheObject->load($cacheId, true))
+                  {
+                      return $cacheCss . "\n/* CSS returned from cache. */";
+                  }
                   // prevent init_dependencies from being called twice
                   $config = new Zend_Config(array(), true);
                   $config->merge(XenForo_Application::get('config'));
