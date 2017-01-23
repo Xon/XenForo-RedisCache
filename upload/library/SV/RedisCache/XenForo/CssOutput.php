@@ -44,10 +44,12 @@ class SV_RedisCache_XenForo_CssOutput extends XFCP_SV_RedisCache_XenForo_CssOutp
               {
                   $cacheBackend->setSlaveCredis(null);
                   // prevent init_dependencies from being called twice
-                  $config = XenForo_Application::get('config');
+                  $config = new Zend_Config(array(), true);
+                  $config->merge(XenForo_Application::get('config'));
                   $enableListeners = $config->enableListeners;
                   $config->enableListeners = false;
-                  XenForo_CodeEvent::setListeners(null);
+                  XenForo_Application::set('config', $config);
+                  XenForo_CodeEvent::setListeners(array(), false);
                   // force a reload of state to prevent more-stale data being used.
                   $dependencies = new MyXenForo_Dependencies_Public();
 		          $dependencies->preLoadData();
@@ -55,6 +57,7 @@ class SV_RedisCache_XenForo_CssOutput extends XFCP_SV_RedisCache_XenForo_CssOutp
                   if ($enableListeners)
                   {
                       $config->enableListeners = true;
+                      $config->setReadOnly();
                       $data = $dependencies->data;
                       if (!is_array($data['codeEventListeners']))
                       {
