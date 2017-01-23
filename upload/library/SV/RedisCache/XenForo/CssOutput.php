@@ -1,5 +1,16 @@
 <?php
 
+class MyXenForo_Dependencies_Public extends XenForo_Dependencies_Public
+{
+    public $data;
+
+    protected function _handleCustomPreloadedData(array &$data)
+    {
+        parent::_handleCustomPreloadedData($data);
+        $this->data = $data;
+    }
+}
+
 class SV_RedisCache_XenForo_CssOutput extends XFCP_SV_RedisCache_XenForo_CssOutput
 {
     public function getCacheId()
@@ -23,6 +34,35 @@ class SV_RedisCache_XenForo_CssOutput extends XFCP_SV_RedisCache_XenForo_CssOutp
           if ($cacheCss = $cacheObject->load($cacheId, true))
           {
               return $cacheCss . "\n/* CSS returned from cache. */";
+          }
+          // ensure loading from the slave(s) is disabled during a cache-miss operation
+          // this ensures critical style properties aren't garbled for some reason when generating css
+          $cacheBackend = $cacheObject->getBackend();
+          if (method_exists($cacheBackend, 'setSlaveCredis') && method_exists($cacheBackend, 'getSlaveCredis'))
+          {
+              if ($cacheBackend->getSlaveCredis() !== null)
+              {
+                  $cacheBackend->setSlaveCredis(null);
+                  // prevent init_dependencies from being called twice
+                  $config = XenForo_Application::get('config');
+                  $enableListeners = $config->enableListeners;
+                  $config->enableListeners = false;
+                  XenForo_CodeEvent::setListeners(null);
+                  // force a reload of state to prevent more-stale data being used.
+                  $dependencies = new MyXenForo_Dependencies_Public();
+		          $dependencies->preLoadData();
+                  // re-populate lisenters from the data we just (re)loaded
+                  if ($enableListeners)
+                  {
+                      $config->enableListeners = true;
+                      $data = $dependencies->data;
+                      if (!is_array($data['codeEventListeners']))
+                      {
+                          $data['codeEventListeners'] = XenForo_Model::create('XenForo_Model_CodeEvent')->rebuildEventListenerCache();
+                      }
+                      XenForo_CodeEvent::setListeners($data['codeEventListeners']);
+                  }
+              }
           }
       }
 

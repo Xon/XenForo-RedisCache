@@ -84,6 +84,16 @@ class Zend_Cache_Backend_Redis extends Cm_Cache_Backend_Redis
         return $this->_redis;
     }
 
+    public function getSlaveCredis()
+    {
+        return $this->_slave;
+    }
+
+    public function setSlaveCredis($slave)
+    {
+        $this->_slave = $slave;
+    }
+
     public function useLua()
     {
         return $this->_useLua;

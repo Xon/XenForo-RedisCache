@@ -12,6 +12,29 @@
  */
 class XenForo_Model_DataRegistry extends XenForo_Model
 {
+    public function __construct()
+    {
+        parent::__construct();
+        if ($cache = $this->_getCache(true))
+        {
+            $this->DisableLoadingFromSlave($cache, class_exists('XenForo_Dependencies_Public', false));
+        }
+    }
+
+    public function DisableLoadingFromSlave($cache, $allowSlaveLoad)
+    {
+        if (!$allowSlaveLoad)
+        {
+            $cacheBackend = $cache->getBackend();
+            if (method_exists($cacheBackend, 'setSlaveCredis'))
+            {
+                $cacheBackend->setSlaveCredis(null);
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Gets the named item.
      *
@@ -155,8 +178,7 @@ class XenForo_Model_DataRegistry extends XenForo_Model
 
         if ($cache)
         {
-            $allowSlaveLoad = class_exists('XenForo_Dependencies_Public', false);
-            $credis = $this->getCredis($cache, $allowSlaveLoad);
+            $credis = $this->getCredis($cache, true);
             if ($credis !== null)
             {
                 $automatic_serialization = $cache->getOption('automatic_serialization');
