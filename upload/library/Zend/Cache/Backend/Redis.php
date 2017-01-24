@@ -17,13 +17,12 @@ class Zend_Cache_Backend_Redis extends Cm_Cache_Backend_Redis
 
     public function preferLocalSlave(array $slaves)
     {
-        $hasIps = false;
-        $ips = array();
+        $ips = null;
         if (function_exists('apcu_fetch'))
         {
             $ips = apcu_fetch('localips', $hasIps);
         }
-        if (!$hasIps || !is_array($ips))
+        if (!is_array($ips))
         {
             // I can't believe there isn't a better way
             try
