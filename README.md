@@ -41,6 +41,9 @@ To load data from slaves use;
 ```
 $config['cache']['backendOptions']['load_from_slaves'] = true;
 ```
+This will prefer any slave with an IP matching an IP on the machine. This is fetched via the non-portable method:```shell_exec("hostname --all-ip-addresses")```
+To run on windows, or if shell_exec is disabled, you must define an 'slave-select' attribute.
+
 
 By default, a local slave is preferred, this can be changed by setting:
 ```
