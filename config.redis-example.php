@@ -6,7 +6,7 @@ $config['cache']['backendOptions'] = array(
         'server' => '127.0.0.1',
         'port' => 6379,
         'timeout' => 2.5,
-        'persistent' : '',
+        'persistent' => '',
         'force_standalone' => false,
         'connect_retries' => 1,
         'read_timeout' => '',
@@ -18,7 +18,7 @@ $config['cache']['backendOptions'] = array(
         'lifetimelimit' => 2592000,
         'compress_threshold' => 20480,
         'automatic_cleaning_factor' => 0,
-        'compression_lib' => '', // dynamically select first of; snappy,lzf,l4z,gzip
+        'compression_lib' => '', // dynamically select first of; snappy,lzf,l4z,gzip IF EMPTY
         'use_lua' => false,
         'sunion_chunk_size' => 500,
         'lua_max_c_stack' => 5000,
