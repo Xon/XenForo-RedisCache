@@ -15,7 +15,7 @@ class SV_RedisCache_XenForo_Model_Thread extends XFCP_SV_RedisCache_XenForo_Mode
                 unset($conditionsSimplified['readUserId']);
                 unset($conditionsSimplified['watchUserId']);
                 unset($conditionsSimplified['postCountUserId']);
-                if ((empty($conditionsSimplified['moderated']) || $conditionsSimplified['moderated'] !== true) && !$options->sv_threadcount_moderated)
+                if (isset($conditionsSimplified['moderated']) && $conditionsSimplified['moderated'] !== true && !$options->sv_threadcount_moderated)
                 {
                     // do not count moderated threads
                     $conditionsSimplified['moderated'] = -1;
