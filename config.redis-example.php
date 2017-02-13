@@ -23,13 +23,30 @@ $config['cache']['backendOptions'] = array(
         'sunion_chunk_size' => 500,
         'lua_max_c_stack' => 5000,
         );
+// single slave (has all the details of backendOptions:
+$config['cache']['backendOptions']['load_from_slave'] = array(
+        'server' => '127.0.0.1',
+        'port' => 6378,
+        'connect_retries' => 2,
+        'use_lua' => true,
+        'compress_data' => 2,
+        'read_timeout' => 1,
+        'timeout' => 30,
+        );
+
 // minimal case for sentinel support (aka HA)
 $config['cache']['backendOptions']['sentinel_master_set'] = 'mymaster';
 $config['cache']['backendOptions']['server'] = '127.0.0.1:26379';
+$config['cache']['backendOptions']['load_from_slaves'] = false; // send readonly queries to the slaves
 // minimal case
 $config['cache']['backendOptions'] = array(
         'server' => '127.0.0.1',
         'port' => 6379,
+        'connect_retries' => 2,
+        'use_lua' => true,
+        'compress_data' => 2,
+        'read_timeout' => 1,
+        'timeout' => 30,
         );
 // install Redis-aware XF Caching replacement. Will break in XF 2.0
 require(XenForo_Application::getInstance()->getConfigDir().'/SV/RedisCache/Installer.php');        

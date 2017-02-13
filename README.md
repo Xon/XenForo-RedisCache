@@ -22,15 +22,36 @@ For best performance use: [phpredis PECL extension](http://pecl.php.net/package/
 
 Sample Redis configuration for XenForo:
 ```
+$config['cache']['enabled'] = true;
+$config['cache']['frontend'] = 'Core';
+$config['cache']['frontendOptions']['cache_id_prefix'] = 'xf_';
 $config['cache']['backend'] = 'Redis';
 $config['cache']['backendOptions'] = array(
         'server' => '127.0.0.1',
         'port' => 6379,
-        );
+        'connect_retries' => 2,
+        'use_lua' => true,
+        'compress_data' => 2,
+        'read_timeout' => 1,
+        'timeout' => 30,
+    );
 ```
 
-Redis Sentinel support for high-availability. See http://redis.io/topics/sentinel for more information.
-Enable with:
+Loding Data from a single slave is possible, or alternatively Redis Sentinel support can be used  high-availability. See http://redis.io/topics/sentinel for more information.
+
+Single Slave:
+$config['cache']['backendOptions']['load_from_slave'] = array(
+        'server' => '127.0.0.1',
+        'port' => 6378,
+        'connect_retries' => 2,
+        'use_lua' => true,
+        'compress_data' => 2,
+        'read_timeout' => 1,
+        'timeout' => 30,
+    );
+
+
+Redis Sentinel Enable with:
 ```
 $config['cache']['backendOptions']['sentinel_master_set'] = 'mymaster';
 $config['cache']['backendOptions']['server'] = '127.0.0.1:26379';
