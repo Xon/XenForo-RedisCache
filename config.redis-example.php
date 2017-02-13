@@ -51,4 +51,9 @@ $config['cache']['backendOptions'] = array(
 // install Redis-aware XF Caching replacement. Will break in XF 2.0
 require(XenForo_Application::getInstance()->getConfigDir().'/SV/RedisCache/Installer.php');        
         
-// $redis = XenForo_Application::getCache()->getBackend()->getCredis();        
+// fetch the master
+    // $registry = $this->getModelFromCache('XenForo_Model_DataRegistry');
+    // if (method_exists($registry, 'getCredis') && $credis = $registry->getCredis($cache, false)) { ... }
+// fetch a slave if possible
+    // $registry = $this->getModelFromCache('XenForo_Model_DataRegistry');
+    // if (method_exists($registry, 'getCredis') && $credis = $registry->getCredis($cache, true)) { ... }
