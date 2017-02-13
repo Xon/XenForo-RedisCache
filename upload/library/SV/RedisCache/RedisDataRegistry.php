@@ -102,62 +102,6 @@ class XenForo_Model_DataRegistry extends XenForo_Model
         return null;
     }
 
-    static $loggedMissingRedis = false;
-
-    public function deleteMulti($itemNamePattern)
-    {
-        $cache = $this->_getCache(true);
-        if (empty($cache))
-        {
-            if (empty(self::$loggedMissingRedis))
-            {
-                self::$loggedMissingRedis = true;
-                XenForo_Error::logException(new Exception("No Cache setup"));
-            }
-            return;
-        }
-        $credis = $this->getCredis($cache);
-        if (empty($credis))
-        {
-            if (empty(self::$loggedMissingRedis))
-            {
-                self::$loggedMissingRedis = true;
-                XenForo_Error::logException(new Exception("Redis Cache is not setup"));
-            }
-            return;
-        }
-        $prefix = Cm_Cache_Backend_Redis::PREFIX_KEY . $cache->getOption('cache_id_prefix');
-        $pattern = $prefix . $itemNamePattern;
-        // indicate to the redis instance would like to process X items at a time.
-        $count = 100;
-        // find indexes matching the pattern
-        $cursor = null;
-        $keys = array();
-        while(true)
-        {
-            $next_keys = $credis->scan($cursor, $pattern, $count);
-            // scan can return an empty array
-            if($next_keys)
-            {
-                $keys += $next_keys;
-            }
-            if (empty($cursor) || $next_keys === false)
-            {
-                break;
-            }
-        }
-        if ($keys)
-        {
-            // delete them, use pipelining
-            $credis->pipeline();
-            foreach($keys as $key)
-            {
-                $credis->del($key);
-            }
-            $credis->exec();
-        }
-    }
-
     /**
      * Gets multiple entries from the registry at once.
      *
