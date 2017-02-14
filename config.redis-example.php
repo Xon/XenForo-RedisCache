@@ -31,7 +31,7 @@ $config['cache']['backendOptions']['load_from_slave'] = array(
         'use_lua' => true,
         'compress_data' => 2,
         'read_timeout' => 1,
-        'timeout' => 30,
+        'timeout' => 1,
         );
 
 // minimal case for sentinel support (aka HA)
@@ -46,7 +46,7 @@ $config['cache']['backendOptions'] = array(
         'use_lua' => true,
         'compress_data' => 2,
         'read_timeout' => 1,
-        'timeout' => 30,
+        'timeout' => 1,
         );
 // install Redis-aware XF Caching replacement. Will break in XF 2.0
 require(XenForo_Application::getInstance()->getConfigDir().'/SV/RedisCache/Installer.php');        

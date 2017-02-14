@@ -33,7 +33,7 @@ $config['cache']['backendOptions'] = array(
         'use_lua' => true,
         'compress_data' => 2,
         'read_timeout' => 1,
-        'timeout' => 30,
+        'timeout' => 1,
     );
 ```
 
@@ -47,7 +47,7 @@ $config['cache']['backendOptions']['load_from_slave'] = array(
         'use_lua' => true,
         'compress_data' => 2,
         'read_timeout' => 1,
-        'timeout' => 30,
+        'timeout' => 1,
     );
 
 
