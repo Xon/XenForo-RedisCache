@@ -15,13 +15,8 @@ class Zend_Cache_Backend_Redis extends Cm_Cache_Backend_Redis
         parent::__construct($options);
     }
 
-    public function preferLocalSlave(array $slaves)
+    protected function getLocalIps(array $ips = null)
     {
-        $ips = null;
-        if (function_exists('apcu_fetch'))
-        {
-            $ips = apcu_fetch('localips', $hasIps);
-        }
         if (!is_array($ips))
         {
             // I can't believe there isn't a better way
@@ -33,14 +28,13 @@ class Zend_Cache_Backend_Redis extends Cm_Cache_Backend_Redis
             if ($output)
             {
                 $ips = array_fill_keys(array_filter(array_map('trim', (explode(' ', $output)))), true);
-                if (function_exists('apcu_store'))
-                {
-                    // bit racing on the first connection, but local IPs rarely change.
-                    apcu_store('localips', $ips);
-                }
             }
         }
+        return $ips;
+    }
 
+    protected function selectLocalRedis(array $slaves, $master)
+    {
         if ($ips)
         {
             /* @var $slave Credis_Client */
@@ -57,6 +51,31 @@ class Zend_Cache_Backend_Redis extends Cm_Cache_Backend_Redis
 
         $slaveKey = array_rand($slaves, 1);
         return $slaves[$slaveKey];
+    }
+
+    public function preferLocalSlave(array $slaves, $master)
+    {
+        $ips = $this->getLocalIps();
+        return $this->selectLocalRedis($ips, $slaves, $master);
+    }
+
+    public function preferLocalSlaveAPCu(array $slaves, $master)
+    {
+        $ips = null;
+        if (function_exists('apcu_fetch'))
+        {
+            $ips = apcu_fetch('localips', $hasIps);
+        }
+        if (!is_array($ips))
+        {
+            $ips = $this->getLocalIps();
+            if (function_exists('apcu_store'))
+            {
+                // bit racing on the first connection, but local IPs rarely change.
+                apcu_store('localips', $ips);
+            }
+        }
+        return $this->selectLocalRedis($ips, $slaves, $master);
     }
 
     public function getCompressThreshold()
