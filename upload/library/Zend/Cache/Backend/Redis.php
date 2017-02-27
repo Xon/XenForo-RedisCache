@@ -59,6 +59,30 @@ class Zend_Cache_Backend_Redis extends Cm_Cache_Backend_Redis
         return $this->selectLocalRedis($ips, $slaves, $master);
     }
 
+    protected function preferLocalSlaveLocalDisk(array $ips = null)
+    {
+        $output = @file_get_contents('/tmp/local_ips');
+        if ($output === false)
+        {
+            try
+            {
+                $output = shell_exec("hostname --all-ip-addresses");
+            }
+            catch(Exception $e) { $output = ''; }
+            if ($output !== false)
+            {
+                file_put_contents('/tmp/local_ips', $output);
+            }
+        }
+
+        $ips = null;
+        if ($output)
+        {
+            $ips = array_fill_keys(array_filter(array_map('trim', (explode(' ', $output)))), true);
+        }
+        return $ips;
+    }
+
     public function preferLocalSlaveAPCu(array $slaves, $master)
     {
         $ips = null;
