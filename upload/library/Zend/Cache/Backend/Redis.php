@@ -12,6 +12,11 @@ class Zend_Cache_Backend_Redis extends Cm_Cache_Backend_Redis
         {
             $options['slave-select'] = array($this, 'preferLocalSlave');
         }
+        // if it is a string, assume it is some method on this class
+        if (isset($options['slave-select']) && is_string($options['slave-select']))
+        {
+            $options['slave-select'] = array($this, $options['slave-select']);
+        }
         parent::__construct($options);
     }
 
