@@ -38,7 +38,7 @@ class Zend_Cache_Backend_Redis extends Cm_Cache_Backend_Redis
         return $ips;
     }
 
-    protected function selectLocalRedis(array $slaves, $master)
+    protected function selectLocalRedis(array $ips = null, array $slaves, $master)
     {
         if ($ips)
         {
@@ -64,7 +64,7 @@ class Zend_Cache_Backend_Redis extends Cm_Cache_Backend_Redis
         return $this->selectLocalRedis($ips, $slaves, $master);
     }
 
-    protected function preferLocalSlaveLocalDisk(array $ips = null)
+    protected function preferLocalSlaveLocalDisk(array $slaves, $master)
     {
         $output = @file_get_contents('/tmp/local_ips');
         if ($output === false)
@@ -85,7 +85,7 @@ class Zend_Cache_Backend_Redis extends Cm_Cache_Backend_Redis
         {
             $ips = array_fill_keys(array_filter(array_map('trim', (explode(' ', $output)))), true);
         }
-        return $ips;
+        return $this->selectLocalRedis($ips, $slaves, $master);
     }
 
     public function preferLocalSlaveAPCu(array $slaves, $master)
