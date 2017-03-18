@@ -68,7 +68,7 @@ To run on windows, or if shell_exec is disabled, you must define an 'slave-selec
 
 By default, a local slave is preferred, this can be changed by setting:
 ```
-$config['cache']['backendOptions']['slave-select'] = function (array $slaves) { 
+$config['cache']['backendOptions']['slave_select_callable'] = function (array $slaves) { 
         $slaveKey = array_rand($slaves, 1);
         return $slaves[$slaveKey];
 };

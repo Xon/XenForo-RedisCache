@@ -40,7 +40,7 @@ $config['cache']['backendOptions']['server'] = '127.0.0.1:26379';
 $config['cache']['backendOptions']['load_from_slaves'] = false; // send readonly queries to the slaves
 $config['cache']['backendOptions']['sentinel_persistent'] = null; // persistent connection option for the sentinel, but not the master/slave
 // preferLocalSlave|preferLocalSlaveLocalDisk|preferLocalSlaveAPCu|closure(array $slaves, $master) - how to select which slave to use. Cache to APCu (not recommended) or local disk (/tmp/local_ips)
-$config['cache']['backendOptions']['slave-select'] = null; 
+$config['cache']['backendOptions']['slave_select_callable'] = null; 
 
 // minimal case
 $config['cache']['backendOptions'] = array(

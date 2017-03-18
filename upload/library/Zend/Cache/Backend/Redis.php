@@ -8,14 +8,14 @@ class Zend_Cache_Backend_Redis extends Cm_Cache_Backend_Redis
 {
     public function __construct($options = array())
     {
-        if (!isset($options['slave-select']))
+        if (!isset($options['slave_select_callable']))
         {
-            $options['slave-select'] = array($this, 'preferLocalSlave');
+            $options['slave_select_callable'] = array($this, 'preferLocalSlave');
         }
         // if it is a string, assume it is some method on this class
-        if (isset($options['slave-select']) && is_string($options['slave-select']))
+        if (isset($options['slave_select_callable']) && is_string($options['slave_select_callable']))
         {
-            $options['slave-select'] = array($this, $options['slave-select']);
+            $options['slave_select_callable'] = array($this, $options['slave_select_callable']);
         }
         parent::__construct($options);
     }
