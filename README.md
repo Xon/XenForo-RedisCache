@@ -53,7 +53,7 @@ $config['cache']['backendOptions']['load_from_slave'] = array(
 
 Redis Sentinel Enable with:
 ```
-$config['cache']['backendOptions']['sentinel_master_set'] = 'mymaster';
+$config['cache']['backendOptions']['sentinel_master'] = 'mymaster';
 $config['cache']['backendOptions']['server'] = '127.0.0.1:26379';
 ```
 'server' now points to a comma delimited list of sentinal servers to find the master. Note; the port must be explicitly listed
