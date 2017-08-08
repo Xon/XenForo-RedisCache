@@ -22,6 +22,7 @@ $config['cache']['backendOptions'] = array(
         'use_lua' => false,
         'sunion_chunk_size' => 500,
         'lua_max_c_stack' => 5000,
+        'enable_tags' => false,
         );
 // single slave (has all the details of backendOptions:
 $config['cache']['backendOptions']['load_from_slave'] = array(

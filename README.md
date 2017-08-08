@@ -20,7 +20,7 @@ require(XenForo_Application::getInstance()->getConfigDir().'/SV/RedisCache/Insta
 
 For best performance use: [phpredis PECL extension](http://pecl.php.net/package/redis)
 
-Sample Redis configuration for XenForo:
+## Sample Redis configuration for XenForo:
 ```
 $config['cache']['enabled'] = true;
 $config['cache']['frontend'] = 'Core';
@@ -39,7 +39,7 @@ $config['cache']['backendOptions'] = array(
 
 Loding Data from a single slave is possible, or alternatively Redis Sentinel support can be used  high-availability. See http://redis.io/topics/sentinel for more information.
 
-Single Slave:
+### Single Slave:
 $config['cache']['backendOptions']['load_from_slave'] = array(
         'server' => '127.0.0.1',
         'port' => 6378,
@@ -51,7 +51,7 @@ $config['cache']['backendOptions']['load_from_slave'] = array(
     );
 
 
-Redis Sentinel Enable with:
+### Redis Sentinel:
 ```
 $config['cache']['backendOptions']['sentinel_master'] = 'mymaster';
 $config['cache']['backendOptions']['server'] = '127.0.0.1:26379';
@@ -74,6 +74,13 @@ $config['cache']['backendOptions']['slave_select_callable'] = function (array $s
 };
 ```
 Setting to false (or some non-callable) will fall back to a random slave.
+
+## Zend Cache Tags Support
+
+By default the Zend Cache "tags" support is disabled as XenForo does not use it and it introduces additional operations to support it. To enable; 
+```
+$config['cache']['backendOptions']['enable_tags'] = true;
+```
 
 Licensing:
 
