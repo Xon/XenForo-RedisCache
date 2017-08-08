@@ -107,6 +107,14 @@ class Zend_Cache_Backend_Redis extends Cm_Cache_Backend_Redis
         return TRUE;
     }
 
+    public function remove($id)
+    {
+        if ($this->enableTags) {
+            return parent::remove($id);
+        }
+        return (bool)$this->_redis->del(self::PREFIX_KEY.$id);
+    }
+
     protected function getLocalIps(array $ips = null)
     {
         if (!is_array($ips))
