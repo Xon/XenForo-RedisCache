@@ -7,52 +7,52 @@
     <template title="SV_Redis_info"><![CDATA[<div class="section" id="RedisInfo">
     <div class="secondaryContent statsList">
         <h3 class="textHeading">{xen:phrase redis_info}</h3>
-        <div class="pairsJustified">
+        <div class="statsBlock">
             <xen:if is="!{$redis}">
-            <dl>
+            <a>
                 <span class="label">{xen:phrase redis_disabled}</span>
-            </dl>
+            </a>
             <xen:else/>
-            <dl>
+            <a>
                 <span class="label"><dt>{xen:phrase redis_version}:</dt></span>
-                <dd>{$redis.redis_version}</dd>
-            </dl>
-            <dl>
+                <strong>{$redis.redis_version}</strong>
+            </a>
+            <a>
                 <span class="label"><dt>{xen:phrase redis_phpredis}:</dt></span>
-                <dd>{xen:if $redis.phpredis, {$redis.phpredis}, {xen:phrase n_a}}</dd>
-            </dl>
-            <dl>
+                <strong>{xen:if $redis.phpredis, {$redis.phpredis}, {xen:phrase n_a}}</strong>
+            </a>
+            <a>
                 <span class="label"><dt>{xen:phrase redis_lua}:</dt></span>
-                <dd>{xen:if $redis.lua, {xen:phrase yes}, {xen:phrase no}}</dd>
-            </dl>
+                <strong>{xen:if $redis.lua, {xen:phrase yes}, {xen:phrase no}}</strong>
+            </a>
             <xen:if is="{$redis.loading}">
-            <dl>
+            <a>
                 <span class="label">{xen:phrase redis_loading}</span>
-            </dl>
+            </a>
             <xen:else/>
             <xen:if is="{$redis.HasIOStats}">
-            <dl>
+            <a>
                 <span class="label"><dt>{xen:phrase redis_input_kbps}:</dt></span>
-                <dd>{xen:number {$redis.instantaneous_input_kbps}}</dd>
-            </dl>
-            <dl>
+                <strong>{xen:number {$redis.instantaneous_input_kbps}}</strong>
+            </a>
+            <a>
                 <span class="label"><dt>{xen:phrase redis_output_kbps}:</dt></span>
-                <dd>{xen:number {$redis.instantaneous_output_kbps}}</dd>
-            </dl>
+                <strong>{xen:number {$redis.instantaneous_output_kbps}}</strong>
+            </a>
             </xen:if>
-            <dl>
+            <a>
                 <span class="label"><dt>{xen:phrase redis_ops}:</dt></span>
-                <dd>{xen:number {$redis.instantaneous_ops_per_sec}}</dd>
-            </dl>
+                <strong>{xen:number {$redis.instantaneous_ops_per_sec}}</strong>
+            </a>
             <xen:if is="{$redis.db.{$redis.db_default}}">
-            <dl>
+            <a>
                 <span class="label"><dt>{xen:phrase redis_db_x_keys, 'database={$redis.db_default}'}:</dt></span>
-                <dd>{xen:number {$redis.db.{$redis.db_default}.keys}}</dd>
-            </dl>
-            <dl>
+                <strong>{xen:number {$redis.db.{$redis.db_default}.keys}}</strong>
+            </a>
+            <a>
                 <span class="label"><dt>{xen:phrase redis_db_x_avg_ttl, 'database={$redis.db_default}'}:</dt></span>
-                <dd>{xen:number {$redis.db.{$redis.db_default}.avg_ttl}}</dd>
-            </dl>
+                <strong>{xen:number {$redis.db.{$redis.db_default}.avg_ttl}}</strong>
+            </a>
             </xen:if>
             </xen:if>
             </xen:if>
