@@ -15,13 +15,19 @@ class SV_RedisCache_XenForo_CssOutput extends XFCP_SV_RedisCache_XenForo_CssOutp
 {
     public function getCacheId()
     {
+        $this->_prepareForOutput();
+
+        $cssForCacheKey = $this->_cssRequested;
+        $cssForCacheKey = array_unique($cssForCacheKey);
+        sort($cssForCacheKey);
+
         return 'xfCssCache' .
             '_style_' . $this->_styleId .
             '_d_' . $this->_inputModifiedDate .
             '_dir_' . $this->_textDirection .
             '_minify_' . (XenForo_Application::get('options')->minifyCss ? '1' : '0') .
             '_debug_' . (XenForo_Application::debugMode() ? '1' : '0') .
-            '_css_' . sha1(join("",$this->_cssRequested)) ;
+            '_css_' . sha1(join("",$cssForCacheKey)) ;
     }
 
     public function renderCss()
@@ -58,6 +64,8 @@ class SV_RedisCache_XenForo_CssOutput extends XFCP_SV_RedisCache_XenForo_CssOutp
                   // force a reload of state to prevent more-stale data being used.
                   $dependencies = new MyXenForo_Dependencies_Public();
 		          $dependencies->preLoadData();
+                  // reload from globals
+                  $this->_prepareForOutput();
                   // re-populate lisenters from the data we just (re)loaded
                   if ($enableListeners)
                   {
@@ -73,8 +81,6 @@ class SV_RedisCache_XenForo_CssOutput extends XFCP_SV_RedisCache_XenForo_CssOutp
               }
           }
       }
-
-      $this->_prepareForOutput();
 
       if (XenForo_Application::isRegistered('bbCode'))
       {
@@ -111,15 +117,19 @@ class SV_RedisCache_XenForo_CssOutput extends XFCP_SV_RedisCache_XenForo_CssOutp
       }
 
       $css = self::renderCssFromObjects($templates, XenForo_Application::debugMode());
+
+      // disable caching/minifying if an invalid template was passed in
+      $allowCache = isset(self::$renderedInvalidTemplate) && self::$renderedInvalidTemplate ? false : true;
+
       $css = self::prepareCssForOutput(
         $css,
           $this->_textDirection,
-          (XenForo_Application::get('options')->minifyCss && $cacheObject)
+          (XenForo_Application::get('options')->minifyCss && $cacheObject && $allowCache)
       );
 
-      if ($cacheObject)
+      if ($cacheObject && $allowCache)
       {
-          $cacheObject->save($css, $cacheId, array(), 86400);
+          $cacheObject->save($css, $cacheId, array(), 3600 + mt_rand(0, 900));
       }
 
       return $css;
