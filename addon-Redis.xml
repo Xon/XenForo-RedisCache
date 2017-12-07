@@ -14,15 +14,15 @@
             </a>
             <xen:else/>
             <a>
-                <span class="label"><dt>{xen:phrase redis_version}:</dt></span>
+                <span class="label">{xen:phrase redis_version}:</span>
                 <strong>{$redis.redis_version}</strong>
             </a>
             <a>
-                <span class="label"><dt>{xen:phrase redis_phpredis}:</dt></span>
+                <span class="label">{xen:phrase redis_phpredis}:</span>
                 <strong>{xen:if $redis.phpredis, {$redis.phpredis}, {xen:phrase n_a}}</strong>
             </a>
             <a>
-                <span class="label"><dt>{xen:phrase redis_lua}:</dt></span>
+                <span class="label">{xen:phrase redis_lua}:</span>
                 <strong>{xen:if $redis.lua, {xen:phrase yes}, {xen:phrase no}}</strong>
             </a>
             <xen:if is="{$redis.loading}">
@@ -32,25 +32,25 @@
             <xen:else/>
             <xen:if is="{$redis.HasIOStats}">
             <a>
-                <span class="label"><dt>{xen:phrase redis_input_kbps}:</dt></span>
+                <span class="label">{xen:phrase redis_input_kbps}:</span>
                 <strong>{xen:number {$redis.instantaneous_input_kbps}}</strong>
             </a>
             <a>
-                <span class="label"><dt>{xen:phrase redis_output_kbps}:</dt></span>
+                <span class="label">{xen:phrase redis_output_kbps}:</span>
                 <strong>{xen:number {$redis.instantaneous_output_kbps}}</strong>
             </a>
             </xen:if>
             <a>
-                <span class="label"><dt>{xen:phrase redis_ops}:</dt></span>
+                <span class="label">{xen:phrase redis_ops}:</span>
                 <strong>{xen:number {$redis.instantaneous_ops_per_sec}}</strong>
             </a>
             <xen:if is="{$redis.db.{$redis.db_default}}">
             <a>
-                <span class="label"><dt>{xen:phrase redis_db_x_keys, 'database={$redis.db_default}'}:</dt></span>
+                <span class="label">{xen:phrase redis_db_x_keys, 'database={$redis.db_default}'}:</span>
                 <strong>{xen:number {$redis.db.{$redis.db_default}.keys}}</strong>
             </a>
             <a>
-                <span class="label"><dt>{xen:phrase redis_db_x_avg_ttl, 'database={$redis.db_default}'}:</dt></span>
+                <span class="label">{xen:phrase redis_db_x_avg_ttl, 'database={$redis.db_default}'}:</span>
                 <strong>{xen:number {$redis.db.{$redis.db_default}.avg_ttl}}</strong>
             </a>
             </xen:if>
