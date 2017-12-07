@@ -11,6 +11,11 @@ class SV_RedisCache_XenForo_Model_DataRegistry extends XFCP_SV_RedisCache_XenFor
         }
     }
 
+    /**
+     * @param Zend_Cache_Core $cache
+     * @param boolean $allowSlaveLoad
+     * @return bool
+     */
     public function DisableLoadingFromSlave($cache, $allowSlaveLoad)
     {
         if (is_callable('parent::DisableLoadingFromSlave'))
@@ -29,6 +34,11 @@ class SV_RedisCache_XenForo_Model_DataRegistry extends XFCP_SV_RedisCache_XenFor
         return false;
     }
 
+    /**
+     * @param Zend_Cache_Core $cache
+     * @param bool            $allowSlave
+     * @return Credis_Client|null
+     */
     public function getCredis($cache, $allowSlave = false)
     {
         if (empty($cache))
@@ -43,6 +53,10 @@ class SV_RedisCache_XenForo_Model_DataRegistry extends XFCP_SV_RedisCache_XenFor
         return null;
     }
 
+    /**
+     * @param Zend_Cache_Core $cache
+     * @return bool|null
+     */
     public function useLua($cache)
     {
         if (empty($cache))

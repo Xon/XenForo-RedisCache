@@ -21,6 +21,11 @@ class XenForo_Model_DataRegistry extends XenForo_Model
         }
     }
 
+    /**
+     * @param Zend_Cache_Core $cache
+     * @param boolean $allowSlaveLoad
+     * @return bool
+     */
     public function DisableLoadingFromSlave($cache, $allowSlaveLoad)
     {
         if (!$allowSlaveLoad)
@@ -88,6 +93,11 @@ class XenForo_Model_DataRegistry extends XenForo_Model
         ', $itemName);
     }
 
+    /**
+     * @param Zend_Cache_Core $cache
+     * @param bool            $allowSlave
+     * @return null|Credis_Client
+     */
     public function getCredis($cache, $allowSlave = false)
     {
         if (empty($cache))
@@ -126,6 +136,7 @@ class XenForo_Model_DataRegistry extends XenForo_Model
             if ($credis !== null)
             {
                 $automatic_serialization = $cache->getOption('automatic_serialization');
+                /** @var Zend_Cache_Backend_Redis $cacheBackend */
                 $cacheBackend = $cache->getBackend();
                 $prefix = Cm_Cache_Backend_Redis::PREFIX_KEY . $cache->getOption('cache_id_prefix');
 

@@ -1,0 +1,8 @@
+<?php
+
+class XFCP_SV_RedisCache_XenForo_ControllerAdmin_Home extends XenForo_ControllerAdmin_Home {}
+class XFCP_SV_RedisCache_XenForo_Model_DataRegistry extends XenForo_Model_DataRegistry {}
+class XFCP_SV_RedisCache_XenForo_Model_Style extends XenForo_Model_Style {}
+class XFCP_SV_RedisCache_XenForo_Model_Thread extends XenForo_Model_Thread {}
+class XFCP_SV_RedisCache_XenForo_CssOutput extends XenForo_CssOutput {}
+class XFCP_SV_RedisCache_SV_SVGTemplate_SvgOutput extends SV_SVGTemplate_SvgOutput {}
