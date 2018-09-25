@@ -37,9 +37,10 @@ $config['cache']['backendOptions'] = array(
     );
 ```
 
-Loding Data from a single slave is possible, or alternatively Redis Sentinel support can be used  high-availability. See http://redis.io/topics/sentinel for more information.
+Loading Data from a single slave is possible, or alternatively Redis Sentinel support can be used  high-availability. See http://redis.io/topics/sentinel for more information.
 
 ### Single Slave:
+```
 $config['cache']['backendOptions']['load_from_slave'] = array(
         'server' => '127.0.0.1',
         'port' => 6378,
@@ -48,8 +49,11 @@ $config['cache']['backendOptions']['load_from_slave'] = array(
         'compress_data' => 2,
         'read_timeout' => 1,
         'timeout' => 1,
+        'retry_reads_on_master' => true,
     );
+```
 
+If 'retry_reads_on_master' is truthy then reads will be retried against master when slave returns "(nil)" value (ie slave is not yet initialized).
 
 ### Redis Sentinel:
 ```

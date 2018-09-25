@@ -23,6 +23,7 @@ $config['cache']['backendOptions'] = array(
         'sunion_chunk_size' => 500,
         'lua_max_c_stack' => 5000,
         'enable_tags' => false,
+        'retry_reads_on_master' => false,
         );
 // single slave (has all the details of backendOptions:
 $config['cache']['backendOptions']['load_from_slave'] = array(
@@ -33,6 +34,7 @@ $config['cache']['backendOptions']['load_from_slave'] = array(
         'compress_data' => 2,
         'read_timeout' => 1,
         'timeout' => 1,
+        'retry_reads_on_master' => true,
         );
 
 // minimal case for sentinel support (aka HA)
